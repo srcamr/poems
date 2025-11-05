@@ -30,9 +30,5 @@ build/
 public/config.php
 copy.php
 
-# Database
-*.sql
-*.sqlite
-
 # Notes
 notd.md
