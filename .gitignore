@@ -1,0 +1,33 @@
+# Dependencies
+node_modules/
+dist/
+*.log
+
+# Environment files
+.env
+.env.local
+.env.*.local
+
+# Configuration
+src/config.js
+
+# IDE
+.vscode/
+.idea/
+*.swp
+*.swo
+
+# OS
+.DS_Store
+Thumbs.db
+
+# Build
+dist/
+build/
+
+# PHP Configuration
+public/config.php
+
+# Database
+*.sql
+*.sqlite
