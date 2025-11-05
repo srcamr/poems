@@ -10,6 +10,7 @@ dist/
 
 # Configuration
 src/config.js
+peoms/src/config.js
 
 # IDE
 .vscode/
@@ -27,7 +28,11 @@ build/
 
 # PHP Configuration
 public/config.php
+copy.php
 
 # Database
 *.sql
 *.sqlite
+
+# Notes
+notd.md
