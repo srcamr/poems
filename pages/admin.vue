@@ -237,7 +237,7 @@ useHead({
           {id: 'approved', label: 'الموثقة', val: stats.approved, color: 'green'},
           {id: 'unapproved', label: 'قيد الانتظار', val: stats.unapproved, color: 'orange'},
           {id: 'reported', label: 'البلاغات', val: stats.reported, color: 'red'}
-        ]" :key="key" class="p-6 rounded-3xl border-2 border-gray-50 shadow-sm transition-all hover:scale-[1.02]" :class="[`bg-${val.color}-50/50`] text-right">
+        ]" :key="key" class="p-6 rounded-3xl border-2 border-gray-50 shadow-sm transition-all hover:scale-[1.02] text-right" :class="[`bg-${val.color}-50/50`]">
           <p class="text-gray-500 font-bold text-sm mb-1">{{ val.label }}</p>
           <p class="text-4xl font-black" :class="[`text-${val.color}-600`]">{{ val.val }}</p>
         </div>
