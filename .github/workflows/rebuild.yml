@@ -4,6 +4,7 @@ on:
   push:
     branches:
       - main
+      - nuxt
   schedule:
     - cron: '0 */6 * * *' # Every 6 hours
   workflow_dispatch: # Allow manual trigger
