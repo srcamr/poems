@@ -30,6 +30,18 @@ jobs:
         env:
           API_BASE_URL: ${{ secrets.API_BASE_URL }}
 
+      - name: Inject PHP Database Secrets
+        run: |
+          mkdir -p .output/public/api
+          cat << 'EOF' > .output/public/api/config.php
+          <?php
+          define('DB_DSN', '${{ secrets.DSN }}');
+          define('DB_USER', '${{ secrets.DATABASE_USER }}');
+          define('DB_PASS', '${{ secrets.DATABASE_PASS }}');
+          define('ALLOWED_ORIGIN', '*');
+          ?>
+          EOF
+
       - name: Deploy to FTP
         uses: SamKirkland/FTP-Deploy-Action@v4.3.5
         with:

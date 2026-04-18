@@ -17,18 +17,14 @@ if ($_SERVER['REQUEST_METHOD'] === 'OPTIONS') {
 }
 
 // Database Configuration
-$servername = DB_HOST;
-$dbname = DB_NAME;
-$dsn = "mysql:host={$servername};dbname={$dbname}";
-$user = DB_USER;
-$pass = DB_PASS;
+// Note: We expect config.php to securely define DB_DSN, DB_USER, and DB_PASS
+$dsn = defined('DB_DSN') ? DB_DSN : "mysql:host=" . (defined('DB_HOST') ? DB_HOST : 'localhost') . ";dbname=" . (defined('DB_NAME') ? DB_NAME : '');
+$user = defined('DB_USER') ? DB_USER : '';
+$pass = defined('DB_PASS') ? DB_PASS : '';
 
 $option = array(
     PDO::MYSQL_ATTR_INIT_COMMAND => 'SET NAMES utf8',
 );
-
-
-$conn = new mysqli($servername, $user, $pass, $dbname);
 
 try {
     $con = new PDO($dsn, $user, $pass, $option);
