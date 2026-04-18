@@ -415,6 +415,39 @@ try {
         }
         exit;
         
+    } else if ($_GET['action'] === 'getSlugs') {
+        $stmt = $con->prepare("SELECT name FROM poemnames");
+        $stmt->execute();
+        $slugs = $stmt->fetchAll(PDO::FETCH_COLUMN);
+        
+        header('Content-Type: application/json; charset=utf-8');
+        echo json_encode($slugs, JSON_UNESCAPED_UNICODE);
+        exit;
+
+    } else if ($_GET['action'] === 'getPoemNames') {
+        $stmt = $con->prepare("SELECT ID, name FROM poemnames");
+        $stmt->execute();
+        $poets = $stmt->fetchAll(PDO::FETCH_ASSOC);
+        
+        header('Content-Type: application/json; charset=utf-8');
+        echo json_encode($poets, JSON_UNESCAPED_UNICODE);
+        exit;
+
+    } else if ($_GET['action'] === 'getPoemBySlug' && isset($_GET['slug'])) {
+        $slug = $_GET['slug'];
+        $stmt = $con->prepare("
+            SELECT m.content 
+            FROM mainTable m 
+            JOIN poemnames p ON m.poemname = p.ID OR m.poemname = p.name
+            WHERE p.name = :slug AND m.status = 1
+        ");
+        $stmt->bindValue(':slug', $slug, PDO::PARAM_STR);
+        $stmt->execute();
+        $poems = $stmt->fetchAll(PDO::FETCH_COLUMN);
+        
+        header('Content-Type: application/json; charset=utf-8');
+        echo json_encode(['poems' => $poems], JSON_UNESCAPED_UNICODE);
+        exit;
 
     } else { 
         header('Content-Type: application/json; charset=utf-8');
