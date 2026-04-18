@@ -3,9 +3,9 @@ export default defineNuxtConfig({
   modules: ['@nuxtjs/tailwindcss'],
   hooks: {
     async 'prerender:routes'(ctx) {
-      const baseUrl = process.env.API_BASE_URL || 'http://localhost/public';
+      const baseUrl = process.env.API_BASE_URL || 'https://poem.aallem.com';
       try {
-        const response = await fetch(`${baseUrl}/api/connect.php?action=getSlugs`);
+        const response = await fetch(`${baseUrl}/public/api/connect.php?action=getSlugs`);
         const records = await response.json();
         if (Array.isArray(records)) {
           records.forEach(name => ctx.routes.add(`/${name}`));
@@ -22,7 +22,7 @@ export default defineNuxtConfig({
   },
   runtimeConfig: {
     public: {
-      apiBaseUrl: process.env.API_BASE_URL || 'https://poem.aallem.com/public'
+      apiBaseUrl: process.env.API_BASE_URL || 'https://poem.aallem.com'
     }
   },
   devtools: { enabled: true }
