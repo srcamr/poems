@@ -8,7 +8,10 @@ export default defineNuxtConfig({
         const response = await fetch(`${baseUrl}/api/connect.php?action=getSlugs`);
         const records = await response.json();
         if (Array.isArray(records)) {
-          records.forEach(name => ctx.routes.add(`/${name}`));
+          records.forEach((name: string) => {
+            const slug = encodeURIComponent(name.trim().replace(/\s+/g, '-'));
+            ctx.routes.add(`/${slug}`);
+          });
         }
       } catch (e) {
         console.error("Error fetching slugs for prerender:", e);

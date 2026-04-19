@@ -4,9 +4,11 @@ const route = useRoute();
 const config = useRuntimeConfig();
 const API_URL = config.public.apiBaseUrl;
 
-const slug = route.params.slug as string;
+const rawSlug = route.params.slug as string;
+const slug = decodeURIComponent(rawSlug);
+const poemName = slug.replace(/-/g, ' ');
 
-const { data: response, pending, error } = await useFetch(`${API_URL}/api/connect.php?action=getPoemBySlug&slug=${encodeURIComponent(slug)}`, {
+const { data: response, pending, error } = await useFetch(`${API_URL}/api/connect.php?action=getPoemBySlug&slug=${encodeURIComponent(poemName)}`, {
   key: `poet-${slug}`,
   transform: (res: any) => res || { poems: [] }
 });
@@ -14,9 +16,9 @@ const { data: response, pending, error } = await useFetch(`${API_URL}/api/connec
 const poems = computed(() => response.value?.poems || []);
 
 useHead({
-  title: `${slug} - أجمل الأبيات الشعرية`,
+  title: `${poemName} - أجمل الأبيات الشعرية`,
   meta: [
-    { name: 'description', content: `تصفح أجمل الأبيات الشعرية للشاعر ${slug}` }
+    { name: 'description', content: `تصفح أجمل الأبيات الشعرية للشاعر ${poemName}` }
   ]
 })
 </script>
@@ -29,7 +31,7 @@ useHead({
           <span>→</span> العودة للرئيسية
         </NuxtLink>
         <h1 class="text-5xl md:text-6xl font-black text-white text-right leading-tight">
-          أبيات <span class="text-transparent bg-clip-text bg-gradient-to-r from-blue-400 to-indigo-300">{{ slug }}</span>
+          أبيات <span class="text-transparent bg-clip-text bg-gradient-to-r from-blue-400 to-indigo-300">{{ poemName }}</span>
         </h1>
       </div>
 

@@ -49,4 +49,6 @@ jobs:
           username: ${{ secrets.FTP_USERNAME }}
           password: ${{ secrets.FTP_PASSWORD }}
           local-dir: .output/public/ # Nuxt generate output directory
-          server-dir: public_html/poem/ # Adjust this based on your hosting structure
+          server-dir: /public_html/poem/ # Adjust this based on your hosting structure
+          protocol: ftp
+          port: 21
