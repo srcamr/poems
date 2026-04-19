@@ -57,8 +57,8 @@ useHead({
         </div>
 
         <div v-else class="grid grid-cols-2 lg:grid-cols-3 gap-6">
-          <NuxtLink v-for="poet in poets" :key="poet.ID" :to="`/${poet.name.trim().replace(/\s+/g, '-')}`" 
-            class="bg-white/10 backdrop-blur-md border border-white/10 p-6 rounded-2xl text-right transition-all hover:bg-white/20 hover:border-white/30 hover:scale-105 active:scale-95 group">
+          <NuxtLink v-for="poet in poets" :key="poet.ID" :to="`/${encodeURIComponent(poet.name.trim().replace(/\s+/g, '-'))}`" 
+          class="bg-white/10 backdrop-blur-md border border-white/10 p-6 rounded-2xl text-right transition-all hover:bg-white/20 hover:border-white/30 hover:scale-105 active:scale-95 group">
             <h4 class="text-xl font-bold text-white group-hover:text-blue-300 transition-colors">{{ poet.name }}</h4>
             <div class="mt-4 flex justify-end">
               <span class="text-xs font-bold uppercase tracking-widest text-blue-400 group-hover:text-blue-200">عرض القصائد ←</span>

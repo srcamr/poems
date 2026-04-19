@@ -1,5 +1,5 @@
 <script setup lang="ts">
-// Nuxt auto-imports useRoute, useFetch, useRuntimeConfig
+// Nuxt auto-imports useRoute, useAsyncData, useRuntimeConfig
 const route = useRoute();
 const config = useRuntimeConfig();
 const API_URL = config.public.apiBaseUrl;
@@ -8,10 +8,39 @@ const rawSlug = route.params.slug as string;
 const slug = decodeURIComponent(rawSlug);
 const poemName = slug.replace(/-/g, ' ');
 
-const { data: response, pending, error } = await useFetch(`${API_URL}/api/connect.php?action=getPoemBySlug&slug=${encodeURIComponent(poemName)}`, {
-  key: `poet-${slug}`,
-  transform: (res: any) => res || { poems: [] }
-});
+try {
+  console.log(`[SSR] Generating page for slug: '${slug}' (raw: '${rawSlug}')`);
+  console.log(`[SSR] Fetching from: ${API_URL}/api/connect.php?action=getPoemBySlug&slug=${poemName}`);
+} catch (e) {
+  console.error('[SSR] Error in setup:', e);
+}
+
+const { data: response, pending, error } = await useAsyncData(
+  `poet-${encodeURIComponent(slug)}`,
+  async () => {
+    console.log(`[SSR] Starting fetch for ${poemName}`);
+    try {
+      const res = await $fetch<{ poems: string[] }>(`${API_URL}/api/connect.php`, {
+        params: {
+          action: 'getPoemBySlug',
+          slug: poemName
+        }
+      });
+      console.log(`[SSR] Fetch success: got ${res?.poems?.length} poems`);
+      return res;
+    } catch (e: any) {
+      console.error(`[SSR] Fetch failed:`, e.message);
+      throw e;
+    }
+  },
+  {
+    default: () => ({ poems: [] as string[] })
+  }
+);
+
+if (error.value) {
+  console.error('[SSR] useAsyncData error:', error.value);
+}
 
 const poems = computed(() => response.value?.poems || []);
 
